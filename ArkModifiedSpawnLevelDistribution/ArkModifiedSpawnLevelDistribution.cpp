@@ -5,6 +5,7 @@
 DECLARE_HOOK(APrimalDinoCharacter_GetRandomBaseLevel, int, APrimalDinoCharacter*, float);
 
 #define FLT_MATCH(a, b) (fabs((a) - (b)) < 0.00001f)
+//#define LOGGING
 
 static int Hook_APrimalDinoCharacter_GetRandomBaseLevel(APrimalDinoCharacter* _APrimalDinoCharacter, float ForceRand_NotUsed)
 {
@@ -100,7 +101,7 @@ static int Hook_APrimalDinoCharacter_GetRandomBaseLevel(APrimalDinoCharacter* _A
 		// do nothing to those
 	}
 	else {
-#ifdef DEBUG
+#ifdef LOGGING
 		FString name;
 		_APrimalDinoCharacter->GetDinoDescriptiveName(&name);
 		Log::GetLog()->warn("Unknown Weight Setup ({}): n {}", name.ToString(), baseLevelWeightEntries.Num());
@@ -114,7 +115,7 @@ static int Hook_APrimalDinoCharacter_GetRandomBaseLevel(APrimalDinoCharacter* _A
 
 static void Load()
 {
-#ifdef DEBUG
+#ifdef LOGGING
 	Log::Get().Init("ArkModifiedSpawnLevelDistribution");
 #endif
 	ArkApi::GetHooks().SetHook("APrimalDinoCharacter.GetRandomBaseLevel", &Hook_APrimalDinoCharacter_GetRandomBaseLevel, &APrimalDinoCharacter_GetRandomBaseLevel_original);
