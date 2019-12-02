@@ -36,12 +36,29 @@ static int Hook_APrimalDinoCharacter_GetRandomBaseLevel(APrimalDinoCharacter* _A
 		// 13.5% chance, 1.69% per level
 		//  5.4% chance, 0.54% per level
 
-		// re-weight the spawn distribution for more common high-levels
-		// 3.0 sum
-		baseLevelWeightEntries[0].EntryWeight = 1.0f;	// 33.3% chance, 6.6% per level
-		baseLevelWeightEntries[1].EntryWeight = 0.8f;	// 26.7% chance, 3.8% per level
-		baseLevelWeightEntries[2].EntryWeight = 0.7f;	// 23.3% chance, 2.92% per level
-		baseLevelWeightEntries[3].EntryWeight = 0.5f;	// 16.7% chance, 1.67% per level
+		FString descriptiveName;
+		_APrimalDinoCharacter->ClassField()->GetDescription(&descriptiveName);
+
+		std::string strDino = descriptiveName.ToString();
+
+		if (strDino == "Gigant_Character_BP_C" || strDino == "Quetz_Character_BP_C" || strDino == "BionicQuetz_Character_BP_C")
+		{
+			// favor even higher spawns for very rare dinos (gigas and quetzals, with only 3-4 spawns on each map)
+			// 3.0 sum
+			baseLevelWeightEntries[0].EntryWeight = 0.5f;	// 16.7% chance, 3.4% per level
+			baseLevelWeightEntries[1].EntryWeight = 0.7f;	// 23.3% chance, 3.3% per level
+			baseLevelWeightEntries[2].EntryWeight = 0.8f;	// 26.7% chance, 3.3% per level
+			baseLevelWeightEntries[3].EntryWeight = 1.0f;	// 33.3% chance, 3.3% per level
+		}
+		else
+		{
+			// re-weight the spawn distribution for more common high-levels
+			// 3.0 sum
+			baseLevelWeightEntries[0].EntryWeight = 1.0f;	// 33.3% chance, 6.6% per level
+			baseLevelWeightEntries[1].EntryWeight = 0.8f;	// 26.7% chance, 3.8% per level
+			baseLevelWeightEntries[2].EntryWeight = 0.7f;	// 23.3% chance, 2.92% per level
+			baseLevelWeightEntries[3].EntryWeight = 0.5f;	// 16.7% chance, 1.67% per level
+		}
 	}
 
 	// wyvern/rock drakes
